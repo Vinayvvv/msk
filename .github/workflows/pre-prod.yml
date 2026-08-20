@@ -1,4 +1,4 @@
-name: prod workflow
+name: pre-prod workflow
 
 on:
   push:
