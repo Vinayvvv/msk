@@ -1,0 +1,30 @@
+name: pre-prod workflow
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  # Job 1: Handles event logging and notification setup
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Github event details
+        run: echo '${{ toJson(github.event) }}'
+
+  # Job 2: Handles compilation and testing
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Stage
+        run: echo "build successful"
+
+  # Job 3: Handles deployment (runs ONLY after build succeeds)
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build # This creates a sequential dependency
+    environment: Production
+    steps:
+      - name: Deploy Stage
+        run: echo "deploy successful and The published tag is ${{ github.ref_name }}"
